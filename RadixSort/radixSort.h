@@ -7,6 +7,7 @@
         Future modifications:
             - Research ways to optimize algorithm (memory usage can be quite high as it requires enough space to generate an array of equal size)
             - Create an MSD version of the algorithm
+            - Implement integer overflow safeguards
 */
 
 #include <stdio.h>
@@ -37,7 +38,7 @@ float* radixSortf(float*, unsigned int, unsigned int);
  * Returns 0 if not done
  * Returns 1 if sorting is done
  */
-static int radix_countSort(int*, unsigned int, unsigned int, unsigned int);
+static int* radix_countSort(int*, unsigned int, unsigned int, unsigned int);
 
 /*
  * Radix sort function
@@ -59,7 +60,7 @@ int* radixSort(int*, unsigned int, unsigned int);
  * Returns 0 if not done
  * Returns 1 if sorting is done
  */
-static int radix_countSortLong(long long* array, unsigned int arraySize, unsigned int range, unsigned int radix);
+static long long* radix_countSortLong(long long* array, unsigned int arraySize, unsigned int range, unsigned int radix);
 
 /*
  * Radix sort function
