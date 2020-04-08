@@ -22,7 +22,7 @@ static void* merge(void* arr1, unsigned int arrLength1, void* arr2, unsigned int
 	unsigned int totalLength = arrLength1 + arrLength2;
 
 	//Allocate memory for temporary array
-	void* temp = malloc(dataSize * (totalLength));
+	void* temp = (void*)malloc(dataSize * (totalLength));
 	if (temp == NULL) {
 		return NULL;
 	}

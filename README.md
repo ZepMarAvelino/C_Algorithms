@@ -8,10 +8,16 @@ To provide pure C algorithm libraries, aimed to simplify the development of futu
 
 ### Radix Sort
 
+### Merge Sort
+
+### Insertion Sort
+
 
 ## Future modifications
 
  - Inclusion of:
+	- Tree sort
+	- Timsort
 	- Counting Sort
 	- Quicksort
 	- Bubblesort
