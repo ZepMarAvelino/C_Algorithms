@@ -43,7 +43,7 @@ void* insertionSort(void* array, unsigned int arrLength, size_t dataSize, int (*
 		while (sortedIdx < unsortedIdx) {
 
 			//If the unsorted cursor should be at this position
-			if (!compFunc(sortedCursor, unsortedCursor)) {
+			if (!compareFunction(sortedCursor, unsortedCursor)) {
 				//copy the element at unsorted cursor to the temp pointer
 				copy(temp, unsortedCursor, dataSize);
 

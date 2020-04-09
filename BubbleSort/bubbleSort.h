@@ -1,9 +1,9 @@
 /*  Autor: Avelino Zepeda Martinez
-    Date Created: April 8th, 2020
-    Last Modified: April 8th, 2020
+    Date Created: April 9th, 2020
+    Last Modified: April 9th, 2020
 
-    Description: Insertion Sort
-        Library contains functions to perform an in place insertion sort.
+    Description: BubbleSort
+        Library contains functions to perform an in place bubble sort.
         Future modifications:
             - Research ways to optimize algorithm
 */
@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef __INSERTIONSORT_H__
-#define __INSERTIONSORT_H__
+#ifndef __BUBBLESORT_H__
+#define __BUBBLESORT_H__
 
 
 /*
@@ -30,6 +30,13 @@ static int (*compareFunction)(void*, void*);
  */
 static void copy(void*, void*, size_t);
 
+
+/*
+ * Internal function used to swap to blocks of memory. Requires additional memory the size of the third argument
+ */
+static int swap(void*, void*, size_t);
+
+
 /*
  *  Sorts an array in place.
  *
@@ -42,6 +49,6 @@ static void copy(void*, void*, size_t);
  *Returns:
  *      void* array - Pointer to the sorted array
  */
-void* insertionSort(void*, unsigned int, size_t, int (*compFun)(void*, void*));
+void* bubbleSort(void*, unsigned int, size_t, int (*compFunc)(void*, void*));
 
 #endif
