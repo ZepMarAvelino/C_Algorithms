@@ -18,14 +18,15 @@ This sort is an ascending sort, which can be really quick and effective for inte
 
 ### Bubble Sort
 
+### Quicksort
 
 ## Future modifications
 
  - Inclusion of:
-	- Quicksort
+	- Quicksort - Ternary
 	- Heapsort
 	- Tree sort
 	- Timsort
 	- Counting Sort
 
- - Attempt multi-threading divide and conquer algorithms
+ - Attempt multi-threaded divide and conquer algorithms
