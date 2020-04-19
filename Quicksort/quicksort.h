@@ -1,16 +1,12 @@
 /*  Autor: Avelino Zepeda Martinez
     Date Created: April 10th, 2020
-    Last Modified: April 10th, 2020
+    Last Modified: April 19th, 2020
 
     Description: Quicksort
         Library contains functions to perform an in place Quicksort.
         Future modifications:
             - Research ways to optimize algorithm
-            - Implement ternary quicksort
 
-        Known Issues:
-            - Arrays that have high value repetition can lead to a stack overflow.
-                - Implementing ternary quicksort may fix this, and even significantly improve the performance in such cases
 */
 
 #include <stdio.h>
@@ -88,6 +84,10 @@ static unsigned int getPivot(void*, unsigned int, size_t, PivotSelect);
  *      void* array - Pointer to the sorted array
  */
 void* partition(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod);
+
+// Older implementation of partition
+// Kept for testing and efficiency comparison purposes
+void* deprecated_partition(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod);
 
 /*
  *  Sorts an array in place.

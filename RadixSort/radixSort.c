@@ -20,7 +20,7 @@ float* radixSortf(float* array, unsigned int arraySize, unsigned int base) {
 
 	//Convert back to float
 	for (unsigned int i = 0; i < arraySize; ++i) {
-		array[i] = (sortArray[i] * 0.00001);
+		array[i] = (float)(sortArray[i] * 0.00001);
 	}
 
 	//Free memory
@@ -30,15 +30,15 @@ float* radixSortf(float* array, unsigned int arraySize, unsigned int base) {
 	return array;
 }
 
-static int* radix_countSort(int* array, unsigned int arraySize, unsigned int range, unsigned int radix) {
+static int* radix_countSort(int* array, unsigned int arraySize, unsigned int range, int radix) {
 	//Allocate memory for the output array
-	int* output = malloc(sizeof(int) * arraySize);
+	int* output = (int*) malloc(sizeof(int) * arraySize);
 	if (output == NULL) {
 		return NULL;
 	}
 
 	//Allocate memory for the "buckets" or possible counts
-	unsigned int* count = malloc(sizeof(unsigned int) * (range));
+	unsigned int* count = (unsigned int*) malloc(sizeof(unsigned int) * (range));
 	if (count == NULL) {
 		return NULL;
 	}
@@ -74,7 +74,7 @@ static int* radix_countSort(int* array, unsigned int arraySize, unsigned int ran
 }
 
 int* radixSort(int* array, unsigned int arraySize, unsigned int base) {
-	unsigned int radix = 1;
+	int radix = 1;
 	int largest = array[0];
 	for (unsigned int i = 1; i < arraySize; i++) {
 		if (array[i] > largest) {
@@ -91,15 +91,15 @@ int* radixSort(int* array, unsigned int arraySize, unsigned int base) {
 	return array;
 }
 
-static long long* radix_countSortLong(long long* array, unsigned int arraySize, unsigned int range, unsigned int radix) {
+static long long* radix_countSortLong(long long* array, unsigned int arraySize, unsigned int range, int radix) {
 	//Allocate memory for the output array
-	long long* output = malloc(sizeof(long long) * arraySize);
+	long long* output = (long long *)malloc(sizeof(long long) * arraySize);
 	if (output == NULL) {
 		return NULL;
 	}
 
 	//Allocate memory for the "buckets" or possible counts
-	unsigned int* count = malloc(sizeof(unsigned int) * (range));
+	unsigned int* count = (unsigned int*) malloc(sizeof(unsigned int) * (range));
 	if (count == NULL) {
 		return NULL;
 	}

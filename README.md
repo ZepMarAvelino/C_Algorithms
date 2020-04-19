@@ -23,7 +23,6 @@ This sort is an ascending sort, which can be really quick and effective for inte
 ## Future modifications
 
  - Inclusion of:
-	- Quicksort - Ternary
 	- Heapsort
 	- Tree sort
 	- Timsort

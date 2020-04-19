@@ -28,11 +28,22 @@ static int swap(void* elem1, void* elem2, size_t dataSize) {
     return 0;
 }
 
+static int equal(void* elem1, void* elem2, size_t dataSize) {
+    char* temp1 = elem1;
+    char* temp2 = elem2;
+    for (size_t i = 0; i < dataSize; i++) {
+        if (temp1[i] != temp2[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 static unsigned int getPivot(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod) {
     //Hold Pivot
     unsigned int pivot;
     //Holds the idx of the 5 points (start, middle, end, first quarter, third quarter)
-    unsigned int start, middle, end, q1, q3;
+    unsigned int middle, end, q1, q3;
     //Pointer to the values at the 5 indices above
     void* startPtr, * endPtr, * middlePtr, * q1Ptr, * q3Ptr;
 
@@ -168,6 +179,109 @@ static unsigned int getPivot(void* array, unsigned int length, size_t dataSize, 
 }
 
 static void* partition(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod) {
+    if (length < 2) {
+        return array;
+    }
+    //printf("Length: %d ", length);
+
+    void* lPtr, * rPtr, * pivotEndPtr, *pivotPtr;
+    unsigned int lIdx, rIdx, pivotEndIdx, pivot;
+
+    //Get the pivot
+    pivot = getPivot(array, length, dataSize, pivotMethod);
+    pivotPtr = (char*)array + (dataSize * pivot);
+    //printf("P: %d\t", pivot);
+    //Move the pivot to the beginning of the array
+    //Preferable to have the if statement than an unnecessary swap. Particularly for large datatypes
+    if (pivot != 0) {
+        swap(pivotPtr, array, dataSize);
+        pivotPtr = array;
+        pivot = 0;
+    }
+
+    //Initialize pointers
+    pivotEndPtr = pivotPtr;
+    lPtr = (char*)array + dataSize;
+    rPtr = (char*)array + (dataSize * (length - 1));
+
+    //Initialize pointer idx counters
+    pivotEndIdx = 0;
+    lIdx = 1;
+    rIdx = length - 1;
+
+    //While the left pointer is to the left of the right pointer
+    do {
+        //While the left pointer points to elements that should be to the left side of the pivot
+        //Stops wherever an element needs to be swapped
+        while ((lIdx < length) && (compareFunction(lPtr, pivotPtr))) {
+            //If the current element is the same as the pivot
+            //Shift this element to the end of the section holding the "pivots"
+            if (pivotEndIdx != lIdx) {
+                if (equal(lPtr, pivotPtr, dataSize)) {
+                    pivotEndIdx++;
+                    pivotEndPtr = (char*)pivotEndPtr + dataSize;
+                    swap(pivotEndPtr, lPtr, dataSize);
+                }
+            }
+            //Increment the left pointer
+            lIdx++;
+            lPtr = (char*)lPtr + dataSize;
+        }
+
+        //While the right pointer points to elements that should be to the right side of the pivot
+        while (!compareFunction(rPtr, pivotPtr)) {
+            rIdx--;
+            rPtr = (char*)rPtr - dataSize;
+        }
+
+        //If the left pointer is still to the left of the right pointer
+        if (lIdx < rIdx) {
+            //If the right pointer is equal to the pivot, move the element to the end of the pivot section
+            if (equal(rPtr, pivotPtr, dataSize)) {
+                pivotEndIdx++;
+                pivotEndPtr = (char*)pivotEndPtr + dataSize;
+                swap(pivotEndPtr, rPtr, dataSize);
+                //printf("Equal\t");
+            }
+            //If the end of the pivot section is not the same as the left pointer swap
+            //If they are the same, then we would be cancelling the move from the previous if statement
+            if (pivotEndIdx != lIdx) {
+                swap(lPtr, rPtr, dataSize);
+            }
+        }
+    } while (lIdx < rIdx);
+
+    //Shift pivot array to the right of the left side array
+    //  AND generate the new partitions, left and right side of the pivot sub array
+    //At this point, the right pointer will be pointing to the end of the left side section
+    //If the end of the pivot section and the right pointer are the same, then there are no elements
+    //  that should be in the left section
+    if (pivotEndIdx < rIdx) {
+        for (int i = pivotEndIdx; i >= 0; i--) {
+            swap(pivotEndPtr, rPtr, dataSize);
+            rIdx--;
+            pivotEndIdx--;
+            rPtr = (char*)rPtr - dataSize;
+            pivotEndPtr = (char*)pivotEndPtr - dataSize;
+        }
+        //Generate the left partition    
+        //Left side would be from the beginning of the array to where the right pointer points to
+        //printf("ridx:%d ", rIdx);
+        partition(array, rIdx + 1, dataSize, pivotMethod);
+    }
+
+    //Generate the right partition
+    //Right side would be from where the left pointer points to to the end of the array
+    //  If the left pointer == the length of the array, there is NO right array
+    if (lIdx < length) {
+        //printf("lidx:%d ", lIdx);
+        partition(lPtr, length - lIdx, dataSize, pivotMethod);
+    }
+
+    return array;
+}
+
+static void* deprecated_partition(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod) {
     //If the array is less than 2 elements, we have finished the recursion
     if (length < 2) {
         return array;
