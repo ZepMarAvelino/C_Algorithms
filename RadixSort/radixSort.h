@@ -1,6 +1,6 @@
 /*  Autor: Avelino Zepeda Martinez
     Date Created: April 3rd, 2020
-    Last Modified: April 6th, 2020
+    Last Modified: April 19th, 2020
 
     Description: Radix Sort LSD
         Library contains functions to perform an in place radix sort on arrays of floats, ints, and long long.
@@ -28,16 +28,6 @@
  */
 float* radixSortf(float*, unsigned int, unsigned int);
 
-/*
- * Internal function that performs the count sort section of radix sort.
- *
- * Called with every radix iteration.
- *
- * Takes in the array to sort, the size of the array, the range of the data (the base), and the current radix
- *
- * Returns NULL if it fails to sort the array, otherwise it returns the array
- */
-static int* radix_countSort(int*, unsigned int, unsigned int, unsigned int);
 
 /*
  * Radix sort function
@@ -47,17 +37,6 @@ static int* radix_countSort(int*, unsigned int, unsigned int, unsigned int);
  * Returns the array sorted
  */
 int* radixSort(int*, unsigned int, unsigned int);
-
-/*
- * Internal function that performs the count sort section of radix sort for the long long version.
- *
- * Called with every radix iteration.
- *
- * Takes in the array to sort, the size of the array, the range of the data (the base), and the current radix
-
- * Returns NULL if it fails to sort the array, otherwise it returns the array
- */
-static long long* radix_countSortLong(long long* array, unsigned int arraySize, unsigned int range, unsigned int radix);
 
 /*
  * Radix sort function

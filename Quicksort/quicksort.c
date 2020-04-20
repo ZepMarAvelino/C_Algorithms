@@ -1,49 +1,46 @@
+/*  Autor: Avelino Zepeda Martinez
+    Date Created: April 10th, 2020
+    Last Modified: April 19th, 2020
+
+    Description: Quicksort
+*/
+
 #include "quicksort.h"
 
-static void copy(void* dest, void* src, size_t dataSize) {
-    //Used temporary char* (1 byte each), so we can copy the 
-    // bytes and perform pointer arithmetic
-    char* temp_dest = dest;
-    char* temp_src = src;
-    for (size_t i = 0; i < dataSize; i++) {
-        temp_dest[i] = temp_src[i];
-    }
-}
+/*
+ * Compare function
+ *
+ * If 1, argument 1 is considered to meet the comparison requirements
+ * If 0, argument 2 is considered to meet the comparison requirements
+ *
+ */
+static int (*compareFunction)(void*, void*);
 
-static int swap(void* elem1, void* elem2, size_t dataSize) {
-    //Allocate temp memory
-    void* temp = (void*)malloc(dataSize);
-    if (temp == NULL) {
-        return -1;
-    }
-
-    //Swap elements
-    copy(temp, elem1, dataSize);
-    copy(elem1, elem2, dataSize);
-    copy(elem2, temp, dataSize);
-
-    //Free temp memory
-    free(temp);
-
-    return 0;
-}
-
-static int equal(void* elem1, void* elem2, size_t dataSize) {
-    char* temp1 = elem1;
-    char* temp2 = elem2;
-    for (size_t i = 0; i < dataSize; i++) {
-        if (temp1[i] != temp2[i]) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
+/*
+ *  Gets the pivot of the array. Depending on the enum PivotSelect.
+ *  If an invalid PivotSelect is fed, then it will default to Median Pivot
+ *
+ *  The types are:
+ *      Single: Returns the middle of the array
+ *      Random: Returns a random index of the array
+ *      Median: Returns the median of 3. First element, last element, and middle element
+ *      Median of Five: Returns the median of 5. First element, first quarter, middle, third quarter, last element
+ *      Ninther: Returns the ninther median. This is the median of three of the first third of the array, middle third, and last third.
+ *          It then obtains the median of these three medians.
+ *
+ *  Takes in :
+ *      void* array - The array to be sorted
+ *      unsigned int arrLength - Length of the array to be sorted
+ *      PivotSelect - Enum of the pivot type
+ *
+ *Returns:
+ *      void* array - Pointer to the sorted array
+ */
 static unsigned int getPivot(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod) {
     //Hold Pivot
     unsigned int pivot;
     //Holds the idx of the 5 points (start, middle, end, first quarter, third quarter)
-    unsigned int middle, end, q1, q3;
+    unsigned int middle, q1, q3;
     //Pointer to the values at the 5 indices above
     void* startPtr, * endPtr, * middlePtr, * q1Ptr, * q3Ptr;
 
@@ -178,6 +175,21 @@ static unsigned int getPivot(void* array, unsigned int length, size_t dataSize, 
     return pivot;
 }
 
+/*
+ *  Recursive portion of the quicksort algorithm
+ *  Gets the pivot of the array, and sorts the array according to the pivot
+ *  It then partitions the array in two and repeats. This is done until the partition is of size 1.
+ *
+ *  Takes in :
+ *      void* array - The array to be sorted
+ *      unsigned int arrLength - Length of the array to be sorted
+ *      size_t dataSize - Size in bytes of each element in the array
+ *      func pointer compFunc - Pointer to the comparison function
+ *      PivotSelect - Enum of the pivot type
+ *
+ *Returns:
+ *      void* array - Pointer to the sorted array
+ */
 static void* partition(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod) {
     if (length < 2) {
         return array;
@@ -281,6 +293,8 @@ static void* partition(void* array, unsigned int length, size_t dataSize, PivotS
     return array;
 }
 
+// Older implementation of partition
+// Kept for testing and efficiency comparison purposes
 static void* deprecated_partition(void* array, unsigned int length, size_t dataSize, PivotSelect pivotMethod) {
     //If the array is less than 2 elements, we have finished the recursion
     if (length < 2) {

@@ -1,32 +1,20 @@
+/*  Autor: Avelino Zepeda Martinez
+	Date Created: April 9th, 2020
+	Last Modified: April 19th, 2020
+
+	Description: BubbleSort
+*/
+
 #include "bubbleSort.h"
 
-static void copy(void* dest, void* src, size_t dataSize) {
-	//Used temporary char* (1 byte each), so we can copy the 
-	// bytes and perform pointer arithmetic
-	char* temp_dest = dest;
-	char* temp_src = src;
-	for (size_t i = 0; i < dataSize; i++) {
-		temp_dest[i] = temp_src[i];
-	}
-}
-
-static int swap(void* elem1, void* elem2, size_t dataSize) {
-	//Allocate temp memory
-	void* temp = (void*) malloc(dataSize);
-	if (temp == NULL) {
-		return -1;
-	}
-
-	//Swap elements
-	copy(temp, elem1, dataSize);
-	copy(elem1, elem2, dataSize);
-	copy(elem2, temp, dataSize);
-
-	//Free temp memory
-	free (temp);
-
-	return 0;
-}
+/*
+ * Compare function
+ *
+ * If 1, argument 1 is considered to meet the comparison requirements
+ * If 0, argument 2 is considered to meet the comparison requirements
+ *
+ */
+static int (*compareFunction)(void*, void*);
 
 void* bubbleSort(void* array, unsigned int arrLength, size_t dataSize, int (*compFunc)(void*, void*)) {
 	//Check if Array is at least of size 2

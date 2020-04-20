@@ -1,22 +1,35 @@
 /*  Autor: Avelino Zepeda Martinez
 	Date Created: April 7th, 2020
-	Last Modified: April 7th, 2020
+	Last Modified: April 19th, 2020
 
 	Description: Merge Sort
 */
 
 #include "mergeSort.h"
 
-static void copy(void* dest, void* src, size_t dataSize) {
-	//Used temporary char* (1 byte each), so we can copy the 
-	// bytes and perform pointer arithmetic
-	char* temp_dest = dest;
-	char* temp_src = src;
-	for (size_t i = 0; i < dataSize; i++) {
-		temp_dest[i] = temp_src[i];
-	}
-}
+/*
+ * Compare function
+ *
+ * If 1, argument 1 is considered to meet the comparison requirements
+ * If 0, argument 2 is considered to meet the comparison requirements
+ *
+ */
+static int (*compareFunction)(void*, void*);
 
+/*
+ * Receives pointers to the beginning of the two split arrays. It then merges them in a sorted fashion.
+ * Sorts in a stable fashion as long as the comparison function is done properly
+ *
+ * Takes in:
+ *      void* arr1 - Pointer to the first array to be merged
+ *      unsigned int arrLength1 - Length of the first section of the array
+ *      void* arr2 - Pointer to the second array to be merged
+ *      unsigned int arrLength2 - Length of the second section of the array
+ *      size_t dataSize - Size in bytes of each element in the array
+ *
+ * Returns:
+ *      void* array - Pointer to the merged array
+ */
 static void* merge(void* arr1, unsigned int arrLength1, void* arr2, unsigned int arrLength2, size_t dataSize) {
 	//Get the resulting arrays length
 	unsigned int totalLength = arrLength1 + arrLength2;
@@ -92,6 +105,21 @@ static void* merge(void* arr1, unsigned int arrLength1, void* arr2, unsigned int
 	return arr1;
 }
 
+/*
+ * Recursive function, used to split the array to single blocks.
+ * After splitting its array, it merges the pieces returned by the recursed function calls
+ * It does not allocate more memory for the splitted sections
+ * Only allocated memory is done while merging, as we need a temporary array to hold the sorted data
+ *
+ * Takes in:
+ *      void* arr - The array to be sorted
+ *      unsigned int arrLength - Length of the array to be sorted
+ *      size_t dataSize - Size in bytes of each element in the array
+ *
+ * Returns:
+ *      void* array - Pointer to the sorted array
+ *          - If at any point the memory allocation failed, it returns null and stops the sorting
+ */
 static void* split(void* arr, unsigned int arrLength, size_t dataSize) {
 	//If the array is of size one or empty (it should be 1 at minimum)
 	//return the array so it can be merged

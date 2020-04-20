@@ -1,3 +1,10 @@
+/*  Autor: Avelino Zepeda Martinez
+	Date Created: April 3rd, 2020
+	Last Modified: April 19th, 2020
+
+	Description: Radix Sort
+*/
+
 #include "radixSort.h"
 
 float* radixSortf(float* array, unsigned int arraySize, unsigned int base) {
@@ -30,6 +37,15 @@ float* radixSortf(float* array, unsigned int arraySize, unsigned int base) {
 	return array;
 }
 
+/*
+ * Internal function that performs the count sort section of radix sort.
+ *
+ * Called with every radix iteration.
+ *
+ * Takes in the array to sort, the size of the array, the range of the data (the base), and the current radix
+ *
+ * Returns NULL if it fails to sort the array, otherwise it returns the array
+ */
 static int* radix_countSort(int* array, unsigned int arraySize, unsigned int range, int radix) {
 	//Allocate memory for the output array
 	int* output = (int*) malloc(sizeof(int) * arraySize);
@@ -91,6 +107,15 @@ int* radixSort(int* array, unsigned int arraySize, unsigned int base) {
 	return array;
 }
 
+/*
+ * Internal function that performs the count sort section of radix sort for the long long version.
+ *
+ * Called with every radix iteration.
+ *
+ * Takes in the array to sort, the size of the array, the range of the data (the base), and the current radix
+
+ * Returns NULL if it fails to sort the array, otherwise it returns the array
+ */
 static long long* radix_countSortLong(long long* array, unsigned int arraySize, unsigned int range, int radix) {
 	//Allocate memory for the output array
 	long long* output = (long long *)malloc(sizeof(long long) * arraySize);
